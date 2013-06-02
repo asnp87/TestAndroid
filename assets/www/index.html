@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+      <!-- <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />-->
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile.structure-1.3.1.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile.theme-1.3.1.css" />
+        <script src="js/jquery-1.9.1.js"></script>
+        <script src="js/jquery.mobile-1.3.1.js"></script>
+        <script src="js/llqrcode.js" type="text/javascript"></script>
+        <script src="js/jquery-ui-1.9.2.custom.min.js" type="text/javascript"></script>
+        <script src="js/jquery.ui.touch-punch.min.js" type="text/javascript"></script>
+        <title>Hello World</title>
+    </head>
+    <body>
+    	
+    	        <div data-role="page" id="page1" data-theme="bc" data-title="Benvenuto">
+            <div data-role="header" data-position="fixed">
+                <h1>Benvenuto</h1>
+            </div>
+            <div data-role="content">
+                <form action="http://" method="POST">
+                    <h3>Inserisci le credenziali</h3>
+                    <div data-role="fieldcontain">
+                        <label for="user">Username</label>
+                        <input type="text" id="user" placeholder="Username">
+                    </div>
+                    <div data-role="fieldcontain">
+                        <label for="password">Password</label>
+                        <input type="text" id="password" placeholder="Password">
+                    </div>
+                    <a data-role="button" href="#ass" data-transition="slideup">Button</a>
+                </form>
+            </div>
+            <div data-role="footer" data-position="fixed" data-theme="b">
+                <h1>Informazioni</h1>
+            </div>
+        </div>
+        <div data-role="page" id="ass" data-theme="b">
+            <div data-role="header" data-position="fixed">
+                <h1>Associa il tuo dispositivo</h1>
+            </div>
+            <div data-role="content">
+                <h3>Scegli in che modo associare il dispositivo</h3>
+                <a data-role="button" href="#qr"
+                data-transition="flip">QRCode</a>
+                <a data-role="button" href="#nfc" data-transition="turn">NFC</a>
+                <h3>Prova REST</h3>
+                <input type="button" id="btnRest" value="Chiama web service" />
+                <div id="result"></div>
+            </div>
+            <div data-role="footer" data-position="fixed" data-theme="b">
+                <div data-role="navbar">
+                    <ul>
+                        <li>
+                            <a data-role="button" href="#ass">Prova 1</a>
+                        </li>
+                        <li>
+                            <a data-role="button" href="#drag">Prova 2 </a>
+                        </li>
+                        <li>
+                            <a data-role="button">Prova 3</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div data-role="dialog" id="qr" data-theme="b">
+             <div data-role="header">
+                <h1>QRCode</h1>
+            </div>
+            <div data-role="content">
+            	<h2>Scegli da dove prendere la foto</h2>
+                <input type="button" value="Camera" onClick="capturePhoto();"/>
+				<input type="button" value="Album" onClick="getPhoto(navigator.camera.PictureSourceType.PHOTOLIBRARY);"/>
+                <img style="display:none;" id="largeImage" src="" />
+            </div>
+        </div>
+        <div data-role="dialog" id="nfc">
+            <div data-role="header">
+                <h1>Header</h1>
+            </div>
+            <div data-role="content"></div>
+            <div data-role="footer">
+                <h1>Footer</h1>
+            </div>
+        </div>
+        
+        <div data-role="page" id="drag">
+            <div data-role="header" data-theme="d">
+        		<h1>Example</h1>
+     		 </div>
+    
+          <div data-role="content" data-theme="c">
+            <ul data-role="listview" data-inset="true" data-theme="d" id="sortable">
+              <li data-role="list-divider">List</li>
+              <li>Item 1</li>
+              <li>Item 2</li>
+              <li>Item 3</li>
+              <li>Item 4</li>
+              <li>Item 5</li>
+            </ul>
+          </div>
+          <div data-role="footer" data-position="fixed" data-theme="b">
+                <div data-role="navbar">
+                    <ul>
+                        <li>
+                            <a data-role="button" href="#ass">Prova 1</a>
+                        </li>
+                        <li>
+                            <a data-role="button" href="#drag">Prova 2 </a>
+                        </li>
+                        <li>
+                            <a data-role="button">Prova 3</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+		</div>
+    	
+        <script type="text/javascript" src="cordova-2.7.0.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript">
+            app.initialize();
+        </script>
+        <script>
+		
+			$(document).bind('pageinit', function() {
+				$('#sortable').sortable();
+				$('#sortable').disableSelection();
+				$('#sortable').bind("sortstop", function(event, ui) {
+					$('#sortable').listview('refresh');
+				});
+			});
+		
+			$("#btnRest").click(function(e) {
+                $.support.cors = true;
+				$.getJSON("http://baconipsum.com/api/?type=meat-and-filler&callback=?", function (data) {
+					$.each(data, function (index, element) {
+						$("#result").append(element);
+					});
+				});
+            });
+		
+			$(document).ready(function(e) {
+                qrcode.callback = showInfo;
+            });
+			
+			function showInfo(data) {
+				alert('Info: ' + data);
+			}
+			
+			var pictureSource;   // picture source
+			var destinationType; // sets the format of returned value 
+			
+			document.addEventListener("deviceready",onDeviceReady,false);
+			
+			function onDeviceReady(){
+				pictureSource = navigator.camera.PictureSourceType;
+				destinationType = navigator.camera.DestinationType;
+			}
+			
+			function capturePhoto() {
+			  navigator.camera.getPicture(onPhotoSuccess, onFail, { quality: 50, destinationType: navigator.camera.DestinationType.FILE_URI, encodingType: navigator.camera.EncodingType.PNG });
+			}
+			
+			function getPhoto(source) {
+			  navigator.camera.getPicture(onPhotoSuccess, onFail, { quality: 50, destinationType: navigator.camera.DestinationType.FILE_URI, sourceType: source });
+    		}
+			
+			function onFail(message) {
+				alert('Errore: ' + message);
+			}
+			
+			function onPhotoSuccess(image) {
+				var largeImage = document.getElementById('largeImage');
+				largeImage.style.display = 'block';
+				largeImage.src = image;
+				qrcode.decode(image);
+			}
+        </script>
+    </body>
+</html>
